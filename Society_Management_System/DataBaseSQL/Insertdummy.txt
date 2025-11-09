@@ -1,0 +1,46 @@
+﻿-- 🏢 Step 1: Create a new society
+INSERT INTO societies (name, address_line1, city, state, pincode)
+VALUES ('Royal Residency', 'Near Central Park', 'Mumbai', 'Maharashtra', '400001');
+-- 👉 Creates a new society record
+
+-- 🏬 Step 2: Add a building under that society
+INSERT INTO buildings (society_id, name, floors)
+VALUES (1, 'Sky Residency', 5);
+-- 👉 Adds “Sky Residency” with 5 floors (prefix auto-assigned if trigger exists)
+
+-- 🏠 Step 3: Create initial unit(s) for this building
+INSERT INTO units (building_id, unit_no, floor_no, carpet_area_sqft, is_parking_allocated)
+VALUES 
+(1, 'A-101', 1, 850, 1),
+(1, 'A-102', 1, 850, 0);
+-- 👉 Adds two units for testing (you can add more later)
+
+-- 👤 Step 4: Register the first main member (Admin)
+INSERT INTO members (society_id, full_name, email, phone)
+VALUES (1, 'Noumaan Shaikh', 'admin@society.com', '9999999999');
+-- 👉 Adds the admin as a society member
+
+-- 🏡 Step 5: Assign a unit to that member (Owner)
+INSERT INTO unit_occupancies (unit_id, member_id, type, start_date)
+VALUES (1, 1, 'Owner', GETDATE());
+-- 👉 Links Member ID 1 to Unit ID 1 (Owner of A-101)
+
+-- 🔐 Step 6: Create login credentials for that member
+INSERT INTO users (member_id, username, password_hash)
+VALUES (1, 'admin', 'hashedpasswordhere');
+-- 👉 Creates login user for the member
+
+-- ⚙️ Step 7: Create the admin role (run once globally)
+INSERT INTO roles (name)
+VALUES ('Admin');
+-- 👉 Creates “Admin” role (only once)
+
+-- 🛡️ Step 8: Assign that role to the admin user
+INSERT INTO user_roles (user_id, role_id, society_id)
+VALUES (1, 1, 1);
+-- 👉 Grants Admin privileges to User ID 1 for Society ID 1
+
+INSERT INTO roles (name) VALUES ('Owner');
+INSERT INTO roles (name) VALUES ('Tenant');
+INSERT INTO roles (name) VALUES ('Security');
+INSERT INTO roles (name) VALUES ('Committee Member');
